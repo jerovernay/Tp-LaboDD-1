@@ -2,45 +2,103 @@ import duckdb
 import pandas as pd
 import os
 
-os.chdir(r"C:\Users\Dell\Escritorio\Tp-LaboDD-1\Descargas") # Aca pongan el directorio que esten usando, asi con cambiar esto solo ya nos core en cualquier compu 
-print("Current working directory:", os.getcwd(), '\n')
-print("Files in current directory:", os.listdir(), '\n')
+
+""" Lectura de Archivos """
+
+#os.chdir(r"C:\Users\Dell\Escritorio\Tp-LaboDD-1\Descargas") # Aca pongan el directorio que esten usando, asi con cambiar esto solo ya nos core en cualquier compu 
+
+# print("Current working directory:", os.getcwd(), '\n')
+# print("Files in current directory:", os.listdir(), '\n')
 
 
-#Leo el csv de Bibliotecas Populares
+""" Lectura de csv's y acceso a SQL"""
+
+#Leo el csv de Bibliotecas Populares y establecimientos
+
 df_bp = pd.read_csv("bibliotecas-populares.csv")
-
-con = duckdb.connect()
-con.register("Bibliotecas", df_bp)
-
 df_ee = pd.read_csv("2025.04.08_padroin_oficial_establecimientos_educativos_die.csv", sep=';')
 df_padron = pd.read_csv("padron_poblacion.csv")
 
 
+
+con = duckdb.connect()
+con.register("Bibliotecas", df_bp)
+con.register("Establecimientos", df_ee)
+con.register("Padron", df_padron)
+
+
+""" Testing """
 
 # Estoy mirando por arriba los datos
 
 # Veo que las columnas todas tengan el mismo dato
 
 res = con.execute("""
-SELECT DISTINCT fuente, COUNT(*) as cantidad 
+SELECT COUNT(*) 
 FROM Bibliotecas
-GROUP by fuente
+
 """).fetchdf()
 
 
-print(res) #Son 1902 datos, si testeamos en los otros es igual
+#print(res) #Son 1902 datos, si testeamos en los otros es igual
 
 # Aca les dejo si quieren ver mas a fondo las columnas de los csv con los tipos de datos, nulls y demas 
 # Hay una banda de datos al pedo
-'''
-print("Info sobre Bp:")
-print(df_bp.info())  
 
-print("Info sobre Ee:")
-print(df_ee.info())
+# print("Info sobre Bp:")
+# print(df_bp.info(), '\n')  
 
-print("Info sobre padron:")
-print(df_padron.info())
+# print("Info sobre Ee:")
+# print(df_ee.info(), '\n')
 
-'''
+# print("Info sobre padron:")
+# print(df_padron.info())
+
+
+
+
+# df_bp["nro_conabip"].nunique()
+
+""" Testeo + """
+
+# Cantidad de Departamentos en EE
+
+cant_DEP_EE = con.execute("""
+SELECT COUNT(DISTINCT "Código de departamento") AS cant_departamentos_ee
+FROM Establecimientos
+""").fetchdf()
+
+print(cant_DEP_EE) # 538
+
+# Cantidad de Departamentos en BP
+
+cant_DEP_BP = con.execute("""
+SELECT COUNT(DISTINCT id_departamento) AS cant_departamentos_bp
+FROM Bibliotecas
+""").fetchdf()
+
+print(cant_DEP_BP)  #437
+
+
+# Consulta para verificar coincidencias por departamento
+
+consultas = con.execute("""
+SELECT 
+    ee."Código de departamento" AS codigo_ee,
+    bp.id_departamento AS codigo_bp,
+    COUNT(*) AS cantidad_coincidencias
+FROM Establecimientos ee
+JOIN Bibliotecas bp 
+    ON ee."Código de departamento" = bp.id_departamento
+GROUP BY ee."Código de departamento", bp.id_departamento
+""").fetchdf()
+
+#print(consultas) # 435
+
+
+
+
+
+
+
+
