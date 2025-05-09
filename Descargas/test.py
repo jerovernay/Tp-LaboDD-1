@@ -8,13 +8,13 @@ print("Files in current directory:", os.listdir(), '\n')
 
 
 #Leo el csv de Bibliotecas Populares
-df_bp = pd.read_csv("bibliotecas-populares.csv")
+bibliotecas = pd.read_csv("bibliotecas-populares.csv")
 
 con = duckdb.connect()
-con.register("Bibliotecas", df_bp)
+con.register("Bibliotecas", bibliotecas)
 
-df_ee = pd.read_csv("2025.04.08_padroin_oficial_establecimientos_educativos_die.csv", sep=';')
-df_padron = pd.read_csv("padron_poblacion.csv")
+establecimientos_ed = pd.read_csv("2025.04.08_padroin_oficial_establecimientos_educativos_die.csv", sep=';')
+padron = pd.read_csv("padron_poblacion.csv", dtype={'Area': str})
 
 
 
@@ -33,14 +33,26 @@ print(res) #Son 1902 datos, si testeamos en los otros es igual
 
 # Aca les dejo si quieren ver mas a fondo las columnas de los csv con los tipos de datos, nulls y demas 
 # Hay una banda de datos al pedo
-'''
 print("Info sobre Bp:")
-print(df_bp.info())  
+print(bibliotecas.info())  
 
 print("Info sobre Ee:")
-print(df_ee.info())
+print(establecimientos_ed.info())
 
 print("Info sobre padron:")
-print(df_padron.info())
+print(padron.info())
 
-'''
+consultaSQL = """
+               SELECT Comuna, Area, SUM(CAST(Casos AS DECIMAL)) AS Total_Casos
+               FROM padron
+               WHERE Area LIKE '02%'
+               GROUP BY Comuna, Area
+               ORDER BY Comuna;
+              """
+
+dataframeResultado = duckdb.query(consultaSQL).df()
+
+print(dataframeResultado)
+
+
+
