@@ -50,7 +50,7 @@ dataframeResultado = duckdb.query(consultaSQL).df()
 
 # Testing sobre lo que espero sea el padron final.
 
-df_padron_prueba = pd.read_csv("padron_prueba02.csv")
+df_padron_prueba = pd.read_csv("padron_RGEtario.csv")
 con.register("prueba", df_padron_prueba)
 
 
@@ -62,6 +62,7 @@ FROM prueba;
 """).fetchdf()
 
 print(consulta00) # 527 como necesitabamos, no se rompe nada
+
 
 
 
