@@ -91,7 +91,9 @@ establecimientos01 = establecimientos_ed.copy()
 # Eliminar columnas duplicadas (conservar solo primera aparición)
 seen = set()
 mascara = []
+
 for col in establecimientos01.columns:
+    
     if col not in seen:
         mascara.append(True)
         seen.add(col)
@@ -107,6 +109,6 @@ establecimientos01.columns = establecimientos01.columns.str.strip()
 print(establecimientos01.columns.tolist())
 
 # Seleccionar solo las deseada, deje jurisdiccion, porque asi podemos entender bien el codigo,id, area de departamento
-establecimientos01 = establecimientos01.reset_index()[['Cueanexo','Jurisdicción','Código de departamento', 'Común', 'Nivel inicial - Jardín maternal', 'Nivel inicial - Jardín de infantes', 'Primario', 'Secundario']]
+establecimientos01 = establecimientos01.reset_index()[['Cueanexo','Jurisdicción','Código de departamento', 'Común', 'Nivel inicial - Jardín maternal', 'Nivel inicial - Jardín de infantes', 'Primario', 'Secundario', 'Secundario - INET']]
 
-#establecimientos01.to_csv("EE_prueba4.csv", index = False)
+establecimientos01.to_csv("EE_prueba5.csv", index = False)
