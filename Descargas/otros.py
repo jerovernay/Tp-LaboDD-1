@@ -2,8 +2,8 @@ import duckdb
 import pandas as pd
 import os
 
-print("Current working directory:", os.getcwd(), '\n')
-print("Files in current directory:", os.listdir(), '\n')
+# print("Current working directory:", os.getcwd(), '\n')
+# print("Files in current directory:", os.listdir(), '\n')
 
 
 #Leo el csv de Bibliotecas Populares
@@ -74,3 +74,39 @@ padron_final = pd.concat(espacios, ignore_index= True)
 # padron_final.to_csv("padron_prueba02.csv", index=False)
 
 
+''' Limpio en base a nuestros valores elegidos el csv de BP'''
+
+biblio01 = bibliotecas.copy()
+
+biblio01 = biblio01.reset_index()[['id_provincia', 'id_departamento', 'departamento', 'fecha_fundacion', 'nro_conabip', 'mail', 'cod_localidad']]
+
+#biblio01.to_csv("test_biblio.csv", index = False)
+
+
+
+''' Limpio en base a nuestros valores elegidos el csv de EE'''
+
+establecimientos01 = establecimientos_ed.copy()
+
+# Eliminar columnas duplicadas (conservar solo primera aparición)
+seen = set()
+mascara = []
+for col in establecimientos01.columns:
+    if col not in seen:
+        mascara.append(True)
+        seen.add(col)
+    else:
+        mascara.append(False)
+
+establecimientos01 = establecimientos01.loc[:, mascara]
+
+# Limpiar espacios en los nombres de columnas
+establecimientos01.columns = establecimientos01.columns.str.strip()
+
+# Mostrar columnas para verificar
+print(establecimientos01.columns.tolist())
+
+# Seleccionar solo las deseada, deje jurisdiccion, porque asi podemos entender bien el codigo,id, area de departamento
+establecimientos01 = establecimientos01.reset_index()[['Cueanexo','Jurisdicción','Código de departamento', 'Común', 'Nivel inicial - Jardín maternal', 'Nivel inicial - Jardín de infantes', 'Primario', 'Secundario']]
+
+#establecimientos01.to_csv("EE_prueba4.csv", index = False)
