@@ -1,19 +1,34 @@
-import math
+import numpy as np
 import pandas as pd
 EE = pd.read_csv(r"C:\Users\gasto\Downloads\EE_limpio.csv")
 
-EE['Primario'] = EE['Primario'].fillna(0).apply(math.ceil)
 
-EE['Jardin'] = (EE['Nivel inicial - Jardín maternal'] + EE['Nivel inicial - Jardín de infantes'])/2
-EE['Jardin'] = EE['Jardin'].fillna(0).apply(math.ceil)
+EE['Primario'] = np.ceil(EE['Primario'].fillna(0))
 
+#Creamos y redondeamos Jardin
+EE['Jardin'] = np.ceil(
+    EE[['Nivel inicial - Jardín maternal', 'Nivel inicial - Jardín de infantes']]
+    .mean(axis=1)
+    .fillna(0)
+)
 
-EE['Secun'] = (EE['Secundario'] + EE['Secundario - INET'])/2
-EE['Secun'] = EE['Secun'].fillna(0).apply(math.ceil)
+#Creamos y redondeamos Secundario
+EE['Secun'] = np.ceil(
+    EE[['Secundario', 'Secundario - INET']]
+    .mean(axis=1)
+    .fillna(0)
+)
 
+# Eliminamos columnas originales y renombramos
+columnas_a_eliminar = [
+    'Nivel inicial - Jardín maternal',
+    'Nivel inicial - Jardín de infantes',
+    'Secundario', 
+    'Secundario - INET'
+]
 
-EE_nuevo = EE.drop(columns=['Nivel inicial - Jardín maternal', 'Nivel inicial - Jardín de infantes', 'Secundario', 'Secundario - INET'])
-EE_nuevo.rename(columns = {'Secun' : 'Secundario'}, inplace=True)
-
+EE_nuevo = EE.drop(columns=columnas_a_eliminar)
+EE_nuevo = EE_nuevo.rename(columns={'Secun': 'Secundario'})
 
 EE_nuevo.to_csv('EE_limpio_2.csv', index=False)
+
