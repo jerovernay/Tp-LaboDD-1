@@ -7,7 +7,7 @@ import pandas as pd
 bibliotecas = pd.read_csv("bibliotecas-populares.csv")
 establecimientos_ed = pd.read_csv("2025.04.08_padroin_oficial_establecimientos_educativos_die.csv", sep=';')
 padron = pd.read_csv("padron_poblacion.csv", dtype={'Area': str})
-padron_filtrado = pd.read_csv("padron_RgEtario.csv")
+padron_filtrado = pd.read_csv("padron_limpio.csv")
 biblio_filtrado = pd.read_csv("test_biblio.csv")
 establecimientos_ed_filtrado = pd.read_csv("EE_casi2.csv")
 
@@ -47,14 +47,14 @@ cant_padron = con.query(consulta_padron_dept_unicos).to_df()
 cant_bp = con.query(consulta_bp_dept_unicos).to_df()
 
 # Mostrar resultados
-print("Departamentos únicos en EE:")    # 528
-print(cant_ee, '\n')
+# print("Departamentos únicos en EE:")    # 528
+# print(cant_ee, '\n')
 
-print("\nDepartamentos únicos en Padrón:")       # 527
-print(cant_padron, '\n')
+# print("\nDepartamentos únicos en Padrón:")       # 527
+# print(cant_padron, '\n')
 
-print("Departamentos unicos en BP: ")           # 437 , hay departamentos que no tienen BP
-print(cant_bp)
+# print("Departamentos unicos en BP: ")           # 437 , hay departamentos que no tienen BP
+# print(cant_bp)
 
 # Veo cuales son unicos 
 consulta_departamentos_en_ambas = """
@@ -82,16 +82,16 @@ no_en_padron = con.query("""
 
 # Departamentos en Padron que no están en EE
 no_en_ee = con.query("""
-    SELECT DISTINCT Padron.Area AS dept_no_en_ee
+    SELECT DISTINCT Padron.id_departamento AS dept_no_en_ee
     FROM Padron
     LEFT JOIN EE
-      ON Padron.Area = EE."Código de departamento"
-    WHERE EE."Código de departamento" IS NULL;
+      ON Padron.Area = EE."id_departameto"
+    WHERE EE."id_departamento" IS NULL;
 """).to_df()
 
 # Mostrar resultados
-# print("Departamentos en EE que NO están en Padrón:")
-# print(no_en_padron, '\n')
+#print("Departamentos en EE que NO están en Padrón:")
+#print(no_en_padron, '\n')
 
 # print("Departamentos en Padrón que NO están en EE:")
 # print(no_en_ee)

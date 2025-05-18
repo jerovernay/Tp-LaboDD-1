@@ -114,38 +114,8 @@ establecimientos01 = establecimientos01.reset_index()[['Cueanexo','Departamento'
 # cambio un par de nombres
 
 establecimientos01.rename(columns={"Código de departamento" : "id_departamento"}, inplace = True)
-padron_final.rename(columns={"Area" : "id_departamento"}, inplace = True)
 
-#padron_final.to_csv("BP_test00.csv", index = False)
 
-""" Genero los ids nuevos para biblio """
-#esta mal
-padron_final['id-departamento'] = padron_final['id_departamento'].replace({
-    94015 : 94014,
-    94008 : 94007,
-    2007 : 2101,
-    2014 : 2102,
-    2021 : 2103,
-    2028 : 2104,
-    2035 : 2105,
-    2042 : 2106,
-    2049 : 2107,
-    2056 : 2108,
-    2063 : 2109,
-    2070 : 2110,
-    2077 : 2111,
-    2084 : 2112,
-    2091 : 2113,
-    2098 : 2114
-    }, inplace = True)
-
-# Faltan 2115 y otra mas
-
-padron_final.to_csv("BP_test02.csv", index = False)
-
-# No me esta dejando, tirenle y fijense porque no
-# Ademas, quedo medio enquilombado con tanta copia, pero creo que vamos bien encaminados.
-# En si me tira que es porque hay que cambiar el original y no la copia.
 
 
 
