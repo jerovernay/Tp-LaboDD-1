@@ -8,9 +8,11 @@ con = duckdb.connect()
 
 con.register("EE", establecimientos_ed)
 
-#establecimientos_ed.info()
-#print('\n Nulls en columnas: ')
-#print(establecimientos_ed.isnull().sum())
+print("Veamos los datos en crudo: ")
+establecimientos_ed.info()
+print('\n Nulls en columnas: ')
+print(establecimientos_ed.isnull().sum(), '\n')
+
 
 """ Problemas con los Mails """
 
@@ -20,6 +22,8 @@ completitud_mails = mails_nulls / Registros_totales * 100
 
 print("\nPorcentaje de establecimientos sin correo electronico: ")
 print(round(completitud_mails,2), '\n')
+
+
 
 mails_mal_formato_total = """
 SELECT 
@@ -33,14 +37,17 @@ WHERE "Mail" IS NOT NULL
 
 
 cant_mails_mal_totalmente = con.query(mails_mal_formato_total).to_df()
-print(cant_mails_mal_totalmente, '\n')  #0.35
+print(cant_mails_mal_totalmente, '\n') 
 
 """ Calculamos el porcentaje de mails validos """
 
-# Teniendo en cuenta que los mails son 81.71 validos, le multiplicamos el porcentaje que tiene al menos un arroba 
+# Teniendo en cuenta que los mails son 81.71 validos, 
+# le multiplicamos el porcentaje que tiene al menos un arroba 
 
 porcentaje_EE_mail_valido = (99.65 * 81.71 / 100)
-#print(porcentaje_EE_mail_valido, '\n') # 81.42 
+print(porcentaje_EE_mail_valido, '\n') # 81.42 
+
+
 
 
 
@@ -74,7 +81,7 @@ print("\nPorcentaje de Domicilios Invalidos: ")
 print(round(porcentaje_invalido, 3), '\n') # 1,14%
 
 porcentaje_problema_domicilio_general = (73.88 * 98.84/ 100)
-print(round(porcentaje_problema_domicilio_general, 3), '\n')
+print(round(porcentaje_problema_domicilio_general, 3), '\n') # 73.02%
 
 
 
