@@ -1,49 +1,38 @@
-# -*- coding: utf-8 -*-
-"""
-Integrantes:
-Gaston Arida 
-Sebastian Ferreiro
-Jeronimo Vernay
-
-Nota: Los archivos originales fueron modificados para facilitar la lectura de los mismos. Aquí se encuentran
-    en formato csv, y con pequeños cambios como nombres de columnas que no afectan a la información 
-    concreta de los archivos originales.
-"""
 import duckdb
 import pandas as pd
-import os
 
-os.chdir(r"C:\Users\Dell\Escritorio") # Vamos a necesitar que aqui completen con el path donde este guardada la carpeta Tp-LaboDD-1
+BP_limpio = pd.read_csv("BP_limpio.csv")
+EE_limpio01 = pd.read_csv("EE_limpio_final_usando2daopcion.csv")
+Provincia = pd.read_csv("Provincia.csv")
+Depto = pd.read_csv("Departamento_corregido.csv")
+Poblacion = pd.read_csv("Padron_limpio_final.csv")
 
-# Leemos los archivos originales
-bibliotecas = pd.read_csv(r"Tp-LaboDD-1\Descargas\TablasOriginales\bibliotecas_populares.csv", dtype={'id_provincia': str, 'id_departamento': str})
-establecimientos_ed = pd.read_csv(r"Tp-LaboDD-1\Descargas\TablasOriginales\2025.04.08_padron_oficial_establecimientos_educativos_die.csv", dtype={'id_departamento': str})
-padron = pd.read_csv(r"Tp-LaboDD-1\Descargas\TablasOriginales\padron_poblacion.csv", dtype={'id_departamento': str})
+# print("Info de Poblacion: ")
+# Poblacion.info()
+# print("\nInfo de Departamento: ")
+# Depto.info()
+# print("\nInfo de BP: ")
+# BP_limpio.info()
+# print("\nInfo de EE: ")
+# EE_limpio01.info()
 
+# Cantidad de valores únicos
+# print(Poblacion["id_departamento"].nunique())
+# print(EE_limpio01["id_departamento"].nunique())
 
-# Generamos las tablas del modelo relacional 
-consulta_provincia = """
-                        SELECT DISTINCT SUBSTR(id_departamento, 1, 2) AS id, Jurisdicción AS nombre
-                        FROM establecimientos_ed
-                    """
-provincia = duckdb.query(consulta_provincia).df()
+# # ¿Tienen los mismos ID únicos?
+# ids_poblacion = set(Poblacion["id_departamento"].unique())
+# ids_ee = set(EE_limpio01["id_departamento"].unique())
 
-consulta_departamento = """
-                        SELECT DISTINCT id_departamento, departamento, SUBSTR(id_departamento, 1, 2) AS id_provincia
-                        FROM establecimientos_ed
-                    """
-departamento = duckdb.query(consulta_departamento).df()
+# print("¿Son exactamente los mismos IDs?", ids_poblacion == ids_ee)
+# print("IDs en Poblacion y no en EE:", ids_poblacion - ids_ee)
+# print("IDs en EE y no en Poblacion:", ids_ee - ids_poblacion)
 
-
-
-""" Consultas SQL """
-
-
-# duckdb.register("EE", EE_limpio01)
-# duckdb.register("Poblacion", Poblacion)
-# duckdb.register("Departamento", Depto)
-# duckdb.register("Provincia", Provincia)  # opcional si tenés un mapping aparte
-# duckdb.register("BP", BP_limpio)
+duckdb.register("EE", EE_limpio01)
+duckdb.register("Poblacion", Poblacion)
+duckdb.register("Departamento", Depto)
+duckdb.register("Provincia", Provincia)  
+duckdb.register("BP", BP_limpio)
 
 consulta1 = """
 SELECT 
@@ -70,7 +59,7 @@ ORDER BY prov.nombre ASC, primarias DESC;
 """
 
 resultado = duckdb.query(consulta1).to_df()
-#print(resultado)
+print(f"resultados 1: {resultado}")
 
 
 
@@ -93,7 +82,7 @@ ORDER BY prov.nombre ASC, bp_desde_1950 DESC;
 """
 
 resultado2 = duckdb.query(consulta2).to_df()
-#print(resultado2)
+print(f"resultados 2: {resultado2}")
 
 
 consulta3 = """
@@ -116,7 +105,7 @@ ORDER BY cantidad_ee DESC, cantidad_bp DESC, prov.nombre ASC, dept.Departamento 
 """
 
 resultado3 = duckdb.query(consulta3).to_df()
-#print(resultado3)
+print(f"resultados 3: {resultado3}")
 
 
 consulta4 = """
@@ -145,4 +134,5 @@ ORDER BY provincia ASC, departamento ASC;
 """
 
 resultado4 = duckdb.query(consulta4).to_df()
-print(resultado4)
+print(f"resultados 4: {resultado4}")
+
