@@ -12,7 +12,7 @@ print("Current working directory:", os.getcwd(), '\n')
 bibliotecas = pd.read_csv(r"TablasOriginales\bibliotecas_populares.csv", dtype={'id_provincia': str, 'id_departamento': str})
 establecimientos_ed = pd.read_csv(r"TablasOriginales\2025.04.08_padron_oficial_establecimientos_educativos_die.csv", dtype={'id_departamento': str})
 padron = pd.read_csv(r"TablasOriginales\padron_poblacion.csv", dtype={'id_departamento': str})
-
+provincias = pd.read_csv(r"TablasModificadas\Provincia.csv",dtype={'id':str})
 
 con = duckdb.connect()
 con.register("Bibliotecas", bibliotecas)
@@ -42,11 +42,15 @@ consultaSQL = """
 
 dataframeResultado = duckdb.query(consultaSQL).df()
 
-print(dataframeResultado)
-print(dataframeResultado)
+# Ejecutar la consulta en DuckDB
+resultado = duckdb.query("""
+    SELECT DISTINCT
+        id_provincia, 
+    FROM bibliotecas
+""").to_df()
 
-
-
+# Exportar a CSV
+resultado.to_csv("departamentos_con_provincia.csv", index=False)
 
 
 
