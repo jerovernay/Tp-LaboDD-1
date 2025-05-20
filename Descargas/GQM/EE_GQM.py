@@ -45,8 +45,7 @@ print(cant_mails_mal_totalmente, '\n')
 # le multiplicamos el porcentaje que tiene al menos un arroba 
 
 porcentaje_EE_mail_valido = (99.65 * 81.71 / 100)
-print(porcentaje_EE_mail_valido, '\n') # 81.42 
-
+print(f"Porcentaje de mail validos: {porcentaje_EE_mail_valido: .2f}%", '\n') # 81.42 
 
 
 
@@ -58,8 +57,7 @@ print(porcentaje_EE_mail_valido, '\n') # 81.42
 sin_numero = establecimientos_ed["Domicilio"].apply(lambda x: not any(char.isdigit() for char in str(x)))
 porcentaje_sin_numero = sin_numero.mean() * 100
 
-print("\nPorcentaje de Domicilios sin Numero: ")
-print(round(porcentaje_sin_numero, 3), '\n') # 26,12
+print(f"\nPorcentaje de Domicilios sin Numero: {porcentaje_sin_numero: .2f}%", '\n') # 26.11
 
 
 # Porcentaje de domicilios con sintexis invalida("falsos")
@@ -77,11 +75,11 @@ def es_invalido(x):
 invalidos = establecimientos_ed["Domicilio"].apply(es_invalido)
 porcentaje_invalido = invalidos.mean() * 100
 
-print("\nPorcentaje de Domicilios Invalidos: ")
-print(round(porcentaje_invalido, 3), '\n') # 1,14%
+print(f"\nPorcentaje de Domicilios Invalidos: {porcentaje_invalido: .2f}%", '\n')
 
 porcentaje_problema_domicilio_general = (73.88 * 98.84/ 100)
-print(round(porcentaje_problema_domicilio_general, 3), '\n') # 73.02%
+print(f"Porcentaje total de domicilios validos: {porcentaje_problema_domicilio_general: .2f}%")
+
 
 
 
