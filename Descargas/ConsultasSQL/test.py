@@ -42,11 +42,12 @@ consultaSQL = """
 
 dataframeResultado = duckdb.query(consultaSQL).df()
 
-print(dataframeResultado)
-print(dataframeResultado)
+resultado = duckdb.query("""
+    SELECT DISTINCT id_departamento, Departamento
+    FROM establecimientos_ed
+    """).df()
 
-
-
+resultado.to_csv("departamentos_distintos.csv", index=False)
 
 
 
