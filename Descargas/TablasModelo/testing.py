@@ -7,26 +7,6 @@ Provincia = pd.read_csv("Provincia.csv")
 Depto = pd.read_csv("Departamento_corregido.csv")
 Poblacion = pd.read_csv("Padron_limpio_final.csv")
 
-# print("Info de Poblacion: ")
-# Poblacion.info()
-# print("\nInfo de Departamento: ")
-# Depto.info()
-# print("\nInfo de BP: ")
-# BP_limpio.info()
-# print("\nInfo de EE: ")
-# EE_limpio01.info()
-
-# Cantidad de valores únicos
-# print(Poblacion["id_departamento"].nunique())
-# print(EE_limpio01["id_departamento"].nunique())
-
-# # ¿Tienen los mismos ID únicos?
-# ids_poblacion = set(Poblacion["id_departamento"].unique())
-# ids_ee = set(EE_limpio01["id_departamento"].unique())
-
-# print("¿Son exactamente los mismos IDs?", ids_poblacion == ids_ee)
-# print("IDs en Poblacion y no en EE:", ids_poblacion - ids_ee)
-# print("IDs en EE y no en Poblacion:", ids_ee - ids_poblacion)
 
 duckdb.register("EE", EE_limpio01)
 duckdb.register("Poblacion", Poblacion)
@@ -76,7 +56,7 @@ ORDER BY prov.nombre ASC, primarias DESC;
 """
 
 resultado = duckdb.query(consulta1).to_df()
-print(f"resultados 1: {resultado}")
+#print(f"resultados 1: {resultado}")
 
 
 
@@ -85,7 +65,7 @@ consulta2 = """
 SELECT 
     prov.nombre AS provincia,
     dept.Departamento AS departamento,
-    COUNT(*) AS bp_desde_1950
+    COUNT(*) AS Cant_BP_fundadas_desde_1950
 
 FROM BP bp
 JOIN Departamento dept ON bp.id_departamento = dept.id_departamento
@@ -95,29 +75,50 @@ WHERE
     TRY_CAST(SUBSTR(bp.fecha_fundacion, 1, 4) AS INTEGER) >= 1950
 
 GROUP BY prov.nombre, dept.Departamento
-ORDER BY prov.nombre ASC, bp_desde_1950 DESC;
+ORDER BY prov.nombre ASC, Cant_BP_fundadas_desde_1950 DESC;
 """
 
 resultado2 = duckdb.query(consulta2).to_df()
 #print(f"resultados 2: {resultado2}")
 
 
+
 consulta3 = """
+WITH bp_por_dpto AS (
+    SELECT 
+        id_departamento,
+        COUNT(DISTINCT nro_conabip) AS cantidad_bp
+    FROM BP
+    GROUP BY id_departamento
+),
+ee_por_dpto AS (
+    SELECT 
+        id_departamento,
+        COUNT(DISTINCT Cueanexo) AS cantidad_ee
+    FROM EE
+    GROUP BY id_departamento
+),
+poblacion_por_dpto AS (
+    SELECT 
+        id_departamento,
+        SUM(casos) AS poblacion_total
+    FROM Poblacion
+    GROUP BY id_departamento
+)
+
 SELECT 
     prov.nombre AS provincia,
     dept.Departamento AS departamento,
-
-    COUNT(DISTINCT bp.nro_conabip) AS cantidad_bp,
-    COUNT(DISTINCT ee.Cueanexo) AS cantidad_ee,
-    SUM(pobl.casos) AS poblacion_total
+    COALESCE(bp.cantidad_bp, 0) AS cantidad_bp,
+    COALESCE(ee.cantidad_ee, 0) AS cantidad_ee,
+    COALESCE(pob.poblacion_total, 0) AS poblacion_total
 
 FROM Departamento dept
 JOIN Provincia prov ON dept.id_provincia = prov.id
-LEFT JOIN BP bp ON bp.id_departamento = dept.id_departamento
-LEFT JOIN EE ee ON ee.id_departamento = dept.id_departamento
-LEFT JOIN Poblacion pobl ON pobl.id_departamento = dept.id_departamento
+LEFT JOIN bp_por_dpto bp ON dept.id_departamento = bp.id_departamento
+LEFT JOIN ee_por_dpto ee ON dept.id_departamento = ee.id_departamento
+LEFT JOIN poblacion_por_dpto pob ON dept.id_departamento = pob.id_departamento
 
-GROUP BY prov.nombre, dept.Departamento
 ORDER BY cantidad_ee DESC, cantidad_bp DESC, prov.nombre ASC, dept.Departamento ASC;
 """
 
@@ -126,30 +127,32 @@ resultado3 = duckdb.query(consulta3).to_df()
 
 
 consulta4 = """
-SELECT provincia, departamento, dominio AS dominio_mas_frecuente
+SELECT provincia, departamento,
+        /* Agaro solo el nombre principal del dominio (sin el .com)) */ 
+       SPLIT_PART(dominio_mas_frecuente, '.', 1) AS dominio_principal
 FROM (
-  SELECT 
-    prov.nombre          AS provincia,
-    dept.Departamento    AS departamento,
-    SPLIT_PART(bp.mail, '@', 2)   AS dominio,
-    COUNT(*)             AS cnt,
-    ROW_NUMBER() OVER (
-      PARTITION BY dept.id_departamento 
-      ORDER BY COUNT(*) DESC
-    )                     AS rn
-  FROM BP bp
-  JOIN Departamento dept 
-    ON bp.id_departamento = dept.id_departamento
-  JOIN Provincia prov 
-    ON dept.id_provincia = prov.id
-  WHERE bp.mail IS NOT NULL
-    AND bp.mail LIKE '%@%'
-  GROUP BY prov.nombre, dept.Departamento, dept.id_departamento, dominio
-)
-WHERE rn = 1
+  SELECT provincia, departamento, dominio AS dominio_mas_frecuente
+  FROM (
+    SELECT 
+      prov.nombre AS provincia,
+      dept.Departamento AS departamento,
+      SPLIT_PART(bp.mail, '@', 2) AS dominio,   /* Agarro la parte después del @ */
+      COUNT(*) AS count,    /* Cuenta repeticiones de cada dominio */
+      ROW_NUMBER() OVER (
+        PARTITION BY dept.id_departamento  /* Agrupo por departamento */
+        ORDER BY COUNT(*) DESC  /* Ordeno dominios de mayor a menor */
+      ) AS nro_fila /* la primer fila sera la mas frecuente */
+    FROM BP bp
+    JOIN Departamento dept ON bp.id_departamento = dept.id_departamento
+    JOIN Provincia prov ON dept.id_provincia = prov.id
+    WHERE bp.mail IS NOT NULL AND bp.mail LIKE '%@%'    /* Filtro mails válidos */
+    GROUP BY prov.nombre, dept.Departamento, dept.id_departamento, dominio
+  ) t
+  WHERE nro_fila = 1
+) final_result
 ORDER BY provincia ASC, departamento ASC;
 """
 
 resultado4 = duckdb.query(consulta4).to_df()
-#print(f"resultados 4: {resultado4}")
-
+print(f"resultados 4: {resultado4}")
+resultado4.to_csv("Consulta_4.csv", index = False)
