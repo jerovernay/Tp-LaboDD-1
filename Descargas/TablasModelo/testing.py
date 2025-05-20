@@ -35,27 +35,44 @@ duckdb.register("Provincia", Provincia)
 duckdb.register("BP", BP_limpio)
 
 consulta1 = """
+WITH ee_por_departamento AS (
+    SELECT 
+        id_departamento,
+        COUNT(DISTINCT CASE WHEN Jardin > 0 THEN Cueanexo END) AS jardines,
+        COUNT(DISTINCT CASE WHEN Primario > 0 THEN Cueanexo END) AS primarias,
+        COUNT(DISTINCT CASE WHEN Secundario > 0 THEN Cueanexo END) AS secundarios
+    FROM EE
+    GROUP BY id_departamento
+),
+poblacion_por_departamento AS (
+    SELECT 
+        id_departamento,
+        SUM(CASE WHEN "Rango etario" = '3 a 5' THEN casos ELSE 0 END) AS poblacion_jardin,
+        SUM(CASE WHEN "Rango etario" = '6 a 11' THEN casos ELSE 0 END) AS poblacion_primaria,
+        SUM(CASE WHEN "Rango etario" = '12 a 18' THEN casos ELSE 0 END) AS poblacion_secundaria
+    FROM Poblacion
+    GROUP BY id_departamento
+)
+
 SELECT 
     prov.nombre AS provincia,
     dept.Departamento AS departamento,
-    
-    COUNT(DISTINCT CASE WHEN ee.Jardin > 0 THEN ee.Cueanexo END) AS jardines,
-    SUM(CASE WHEN pobl."Rango etario" = '3 a 5' THEN pobl.casos ELSE 0 END) AS poblacion_jardin,
-    
-    COUNT(DISTINCT CASE WHEN ee.Primario > 0 THEN ee.Cueanexo END) AS primarias,
-    SUM(CASE WHEN pobl."Rango etario" = '6 a 11' THEN pobl.casos ELSE 0 END) AS poblacion_primaria,
-    
-    COUNT(DISTINCT CASE WHEN ee.Secundario > 0 THEN ee.Cueanexo END) AS secundarios,
-    SUM(CASE WHEN pobl."Rango etario" = '12 a 18' THEN pobl.casos ELSE 0 END) AS poblacion_secundaria
+
+    COALESCE(ee.jardines, 0) AS jardines,
+    COALESCE(pob.poblacion_jardin, 0) AS poblacion_jardin,
+
+    COALESCE(ee.primarias, 0) AS primarias,
+    COALESCE(pob.poblacion_primaria, 0) AS poblacion_primaria,
+
+    COALESCE(ee.secundarios, 0) AS secundarios,
+    COALESCE(pob.poblacion_secundaria, 0) AS poblacion_secundaria
 
 FROM Depto dept
 JOIN Provincia prov ON dept.id_provincia = prov.id
-LEFT JOIN EE ee ON dept.id_departamento = ee.id_departamento
-LEFT JOIN Poblacion pobl ON dept.id_departamento = pobl.id_departamento
+LEFT JOIN ee_por_departamento ee ON dept.id_departamento = ee.id_departamento
+LEFT JOIN poblacion_por_departamento pob ON dept.id_departamento = pob.id_departamento
 
-GROUP BY prov.nombre, dept.Departamento
 ORDER BY prov.nombre ASC, primarias DESC;
-
 """
 
 resultado = duckdb.query(consulta1).to_df()
@@ -82,7 +99,7 @@ ORDER BY prov.nombre ASC, bp_desde_1950 DESC;
 """
 
 resultado2 = duckdb.query(consulta2).to_df()
-print(f"resultados 2: {resultado2}")
+#print(f"resultados 2: {resultado2}")
 
 
 consulta3 = """
@@ -105,7 +122,7 @@ ORDER BY cantidad_ee DESC, cantidad_bp DESC, prov.nombre ASC, dept.Departamento 
 """
 
 resultado3 = duckdb.query(consulta3).to_df()
-print(f"resultados 3: {resultado3}")
+#print(f"resultados 3: {resultado3}")
 
 
 consulta4 = """
@@ -134,5 +151,5 @@ ORDER BY provincia ASC, departamento ASC;
 """
 
 resultado4 = duckdb.query(consulta4).to_df()
-print(f"resultados 4: {resultado4}")
+#print(f"resultados 4: {resultado4}")
 
