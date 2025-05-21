@@ -1,8 +1,10 @@
+#codigos de limpieza para EE
+
 import pandas as pd
 import numpy as np
 
 
-EE = pd.read_csv(r"C:\Users\gasto\OneDrive\Documents\tp_labo\EE_2.csv")
+EE = pd.read_csv(r"C:\Users\gasto\Downloads\EE(2da_opcion).csv", sep=';')
 
 
 seen = set()
@@ -22,12 +24,12 @@ establecimientos_ed = EE.loc[:, mascara]
 establecimientos_ed.columns = establecimientos_ed.columns.str.strip()
 
 # Seleccionar solo las deseada, deje jurisdiccion, porque asi podemos entender bien el codigo,id, area de departamento
-establecimientos_ed = establecimientos_ed.reset_index()[['id_departamento','Cueanexo','departamento_normalizado', 'Común', 'Nivel inicial - Jardín maternal', 'Nivel inicial - Jardín de infantes', 'Primario', 'Secundario', 'Secundario - INET']]
+establecimientos_ed = establecimientos_ed.reset_index()[['Código de departamento','Cueanexo','Departamento', 'Común', 'Nivel inicial - Jardín maternal', 'Nivel inicial - Jardín de infantes', 'Primario', 'Secundario', 'Secundario - INET']]
 
 # Limpio la antartida
-establecimientos_ed = establecimientos_ed[establecimientos_ed['id_departamento'] != 94028]
+establecimientos_ed = establecimientos_ed[establecimientos_ed['Código de departamento'] != 94028]
 
-establecimientos_ed.to_csv("EE_limpio.csv", index = False)
+establecimientos_ed.rename(columns={"Código de departamento" : "id_departamento"}, inplace = True)
 
 
 # -----------------------------------------------------------
@@ -62,4 +64,4 @@ columnas_a_eliminar = [
 EE_nuevo = establecimientos_ed.drop(columns=columnas_a_eliminar)
 EE_nuevo = EE_nuevo.rename(columns={'Secun': 'Secundario'})
 
-EE_nuevo.to_csv('EE_limpio_2.csv', index=False)
+EE_nuevo.to_csv('EE_limpio_final.csv', index=False)
