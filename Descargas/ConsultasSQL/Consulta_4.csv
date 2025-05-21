@@ -5,12 +5,12 @@ Buenos Aires,ALBERTI,hotmail
 Buenos Aires,ALMIRANTE BROWN,yahoo
 Buenos Aires,ARRECIFES,yahoo
 Buenos Aires,AVELLANEDA,yahoo
-Buenos Aires,AZUL,yahoo
+Buenos Aires,AZUL,bibliotecaronco
 Buenos Aires,BAHIA BLANCA,yahoo
 Buenos Aires,BALCARCE,yahoo
 Buenos Aires,BENITO JUAREZ,gmail
 Buenos Aires,BERAZATEGUI,yahoo
-Buenos Aires,BERISSO,hotmail
+Buenos Aires,BERISSO,yahoo
 Buenos Aires,BOLIVAR,yahoo
 Buenos Aires,BRAGADO,yahoo
 Buenos Aires,BRANDSEN,hotmail
@@ -20,11 +20,11 @@ Buenos Aires,CARLOS CASARES,gmail
 Buenos Aires,CARLOS TEJEDOR,yahoo
 Buenos Aires,CARMEN DE ARECO,yahoo
 Buenos Aires,CASTELLI,yahoo
-Buenos Aires,CAÑUELAS,hotmail
-Buenos Aires,CHASCOMUS,yahoo
+Buenos Aires,CAÑUELAS,yahoo
+Buenos Aires,CHASCOMUS,hotmail
 Buenos Aires,CHIVILCOY,hotmail
 Buenos Aires,CORONEL DE MARINA L ROSALES,gmail
-Buenos Aires,CORONEL DORREGO,altisa
+Buenos Aires,CORONEL DORREGO,gmail
 Buenos Aires,CORONEL SUAREZ,gmail
 Buenos Aires,ENSENADA,yahoo
 Buenos Aires,ESCOBAR,yahoo
@@ -49,14 +49,14 @@ Buenos Aires,LA MATANZA,yahoo
 Buenos Aires,LA PLATA,yahoo
 Buenos Aires,LANUS,hotmail
 Buenos Aires,LAPRIDA,yahoo
-Buenos Aires,LEANDRO N. ALEM,hotmail
+Buenos Aires,LEANDRO N. ALEM,live
 Buenos Aires,LINCOLN,hotmail
 Buenos Aires,LOBERIA,gmail
 Buenos Aires,LOBOS,yahoo
 Buenos Aires,LOMAS DE ZAMORA,yahoo
 Buenos Aires,LUJAN,gmail
 Buenos Aires,MAGDALENA,gmail
-Buenos Aires,MALVINAS ARGENTINAS,gmail
+Buenos Aires,MALVINAS ARGENTINAS,hotmail
 Buenos Aires,MAR CHIQUITA,yahoo
 Buenos Aires,MARCOS PAZ,gmail
 Buenos Aires,MERCEDES,hotmail
@@ -66,10 +66,10 @@ Buenos Aires,MORENO,hotmail
 Buenos Aires,MORON,hotmail
 Buenos Aires,NAVARRO,copesnet
 Buenos Aires,NECOCHEA,hotmail
-Buenos Aires,OLAVARRIA,hotmail
+Buenos Aires,OLAVARRIA,yahoo
 Buenos Aires,PATAGONES,yahoo
 Buenos Aires,PEHUAJO,live
-Buenos Aires,PERGAMINO,yahoo
+Buenos Aires,PERGAMINO,hotmail
 Buenos Aires,PILAR,yahoo
 Buenos Aires,PINAMAR,telpin
 Buenos Aires,PUAN,yahoo
@@ -80,7 +80,7 @@ Buenos Aires,RIVADAVIA,gmail
 Buenos Aires,ROQUE PEREZ,yahoo
 Buenos Aires,SAAVEDRA,yahoo
 Buenos Aires,SALTO,hotmail
-Buenos Aires,SAN ANTONIO DE ARECO,hotmail
+Buenos Aires,SAN ANTONIO DE ARECO,yahoo
 Buenos Aires,SAN FERNANDO,gmail
 Buenos Aires,SAN ISIDRO,yahoo
 Buenos Aires,SAN MIGUEL,hotmail
@@ -100,7 +100,7 @@ Buenos Aires,VILLARINO,yahoo
 Buenos Aires,ZARATE,hotmail
 Catamarca,CAPAYAN,yahoo
 Catamarca,FRAY MAMERTO ESQUIU,yahoo
-Catamarca,SANTA ROSA,hotmail
+Catamarca,SANTA ROSA,yahoo
 Catamarca,VALLE VIEJO,hotmail
 Chaco,2 DE ABRIL,yahoo
 Chaco,25 DE MAYO,yahoo
@@ -109,10 +109,10 @@ Chaco,BERMEJO,yahoo
 Chaco,CHACABUCO,gmail
 Chaco,COMANDANTE FERNANDEZ,hotmail
 Chaco,GENERAL BELGRANO,gmail
-Chaco,GENERAL DONOVAN,hotmail
+Chaco,GENERAL DONOVAN,yahoo
 Chaco,GENERAL GUEMES,yahoo
 Chaco,LIBERTADOR GENERAL SAN MARTIN,yahoo
-Chaco,MAYOR LUIS J FONTANA,gmail
+Chaco,MAYOR LUIS J FONTANA,vai
 Chaco,O HIGGINS,yahoo
 Chaco,PRESIDENCIA DE LA PLAZA,hotmail
 Chaco,QUITILIPI,hotmail
@@ -129,14 +129,14 @@ Chubut,SARMIENTO,yahoo
 Chubut,TEHUELCHES,hotmail
 Ciudad de Buenos Aires,Comuna 1,gmail
 Ciudad de Buenos Aires,Comuna 10,yahoo
-Ciudad de Buenos Aires,Comuna 11,yahoo
-Ciudad de Buenos Aires,Comuna 12,gmail
+Ciudad de Buenos Aires,Comuna 11,hotmail
+Ciudad de Buenos Aires,Comuna 12,hotmail
 Ciudad de Buenos Aires,Comuna 13,hotmail
 Ciudad de Buenos Aires,Comuna 14,hotmail
+Ciudad de Buenos Aires,Comuna 15,yahoo
 Ciudad de Buenos Aires,Comuna 2,yahoo
 Ciudad de Buenos Aires,Comuna 3,tesis11
 Ciudad de Buenos Aires,Comuna 4,yahoo
-Ciudad de Buenos Aires,Comuna 5,hotmail
 Ciudad de Buenos Aires,Comuna 6,gmail
 Ciudad de Buenos Aires,Comuna 7,gmail
 Ciudad de Buenos Aires,Comuna 8,gmail
@@ -159,7 +159,7 @@ Córdoba,CAPITAL,yahoo
 Córdoba,COLON,hotmail
 Córdoba,GENERAL ROCA,delcampillocoop
 Córdoba,GENERAL SAN MARTIN,hotmail
-Córdoba,ISCHILIN,gmail
+Córdoba,ISCHILIN,intinet
 Córdoba,JUAREZ CELMAN,yahoo
 Córdoba,MARCOS JUAREZ,hotmail
 Córdoba,PRESIDENTE ROQUE SAENZ PEÑA,hotmail
@@ -174,9 +174,9 @@ Córdoba,SANTA MARIA,gmail
 Córdoba,TERCERO ARRIBA,hotmail
 Córdoba,UNION,yahoo
 Entre Ríos,COLON,hotmail
-Entre Ríos,CONCORDIA,hotmail
+Entre Ríos,CONCORDIA,concordia
 Entre Ríos,DIAMANTE,yahoo
-Entre Ríos,FEDERACION,gmail
+Entre Ríos,FEDERACION,outlook
 Entre Ríos,FEDERAL,hotmail
 Entre Ríos,GUALEGUAY,yahoo
 Entre Ríos,GUALEGUAYCHU,hotmail
@@ -188,7 +188,7 @@ Entre Ríos,SAN SALVADOR,yahoo
 Entre Ríos,TALA,gmail
 Entre Ríos,URUGUAY,yahoo
 Entre Ríos,VILLAGUAY,gmail
-Formosa,FORMOSA,hotmail
+Formosa,FORMOSA,fibertel
 Formosa,PATIÑO,hotmail
 Formosa,PILCOMAYO,hotmail
 Formosa,PIRANE,hotmail
@@ -201,14 +201,14 @@ La Pampa,ATREUCO,gmail
 La Pampa,CALEU CALEU,hotmail
 La Pampa,CAPITAL,gmail
 La Pampa,CATRILO,bepe
-La Pampa,CHAPALEUFU,hotmail
+La Pampa,CHAPALEUFU,yahoo
 La Pampa,CONHELO,yahoo
 La Pampa,GUATRACHE,gmail
 La Pampa,HUCAL,hotmail
 La Pampa,LOVENTUE,hotmail
-La Pampa,MARACO,hotmail
+La Pampa,MARACO,yahoo
 La Pampa,QUEMU QUEMU,yahoo
-La Pampa,RANCUL,hotmail
+La Pampa,RANCUL,yahoo
 La Pampa,REALICO,hotmail
 La Pampa,TOAY,cpenet
 La Pampa,TRENEL,yahoo
@@ -221,7 +221,7 @@ Mendoza,GENERAL ALVEAR,yahoo
 Mendoza,GODOY CRUZ,hotmail
 Mendoza,GUAYMALLEN,yahoo
 Mendoza,JUNIN,gmail
-Mendoza,LAS HERAS,yahoo
+Mendoza,LAS HERAS,live
 Mendoza,LAVALLE,hotmail
 Mendoza,LUJAN DE CUYO,yahoo
 Mendoza,MAIPU,gmail
@@ -234,10 +234,10 @@ Mendoza,TUNUYAN,yahoo
 Mendoza,TUPUNGATO,gmail
 Misiones,25 DE MAYO,yahoo
 Misiones,CANDELARIA,gmail
-Misiones,CAPITAL,arnetbiz
+Misiones,CAPITAL,gmail
 Misiones,ELDORADO,hotmail
 Misiones,LEANDRO N. ALEM,hotmail
-Misiones,LIBERTADOR GRL SAN MARTIN,live
+Misiones,LIBERTADOR GRL SAN MARTIN,yahoo
 Misiones,MONTECARLO,yahoo
 Misiones,OBERA,yahoo
 Misiones,SAN IGNACIO,gmail
@@ -254,9 +254,9 @@ Neuquén,ÑORQUIN,hotmail
 Río Negro,25 DE MAYO,yahoo
 Río Negro,ADOLFO ALSINA,yahoo
 Río Negro,AVELLANEDA,yahoo
-Río Negro,BARILOCHE,gmail
+Río Negro,BARILOCHE,elbolson
 Río Negro,CONESA,gmail
-Río Negro,GENERAL ROCA,hotmail
+Río Negro,GENERAL ROCA,yahoo
 Río Negro,PILCANIYEU,gmail
 Río Negro,SAN ANTONIO,yahoo
 Río Negro,VALCHETA,yahoo
@@ -282,7 +282,7 @@ San Luis,CHACABUCO,hotmail
 San Luis,CORONEL PRINGLES,hotmail
 San Luis,GENERAL JUAN MARTIN DE PUEYRREDON,gmail
 San Luis,GENERAL PEDERNERA,yahoo
-San Luis,JUNIN,hotmail
+San Luis,JUNIN,merlo_sl
 San Luis,LIBERTADOR GRL SAN MARTIN,hotmail
 Santa Cruz,DESEADO,hotmail
 Santa Cruz,GUER AIKE,riogallegos
@@ -300,13 +300,13 @@ Santa Fe,IRIONDO,hotmail
 Santa Fe,LA CAPITAL,gmail
 Santa Fe,LAS COLONIAS,hotmail
 Santa Fe,ROSARIO,hotmail
-Santa Fe,SAN CRISTOBAL,gmail
-Santa Fe,SAN JAVIER,romang
+Santa Fe,SAN CRISTOBAL,hotmail
+Santa Fe,SAN JAVIER,yahoo
 Santa Fe,SAN JERONIMO,hotmail
-Santa Fe,SAN JUSTO,hotmail
-Santa Fe,SAN LORENZO,hotmail
+Santa Fe,SAN JUSTO,gcrespo
+Santa Fe,SAN LORENZO,arnet
 Santa Fe,SAN MARTIN,gmail
-Santa Fe,VERA,trcnet
+Santa Fe,VERA,cosemar
 Santiago del Estero,AVELLANEDA,hotmail
 Santiago del Estero,BANDA,hotmail
 Santiago del Estero,BELGRANO,hotmail
