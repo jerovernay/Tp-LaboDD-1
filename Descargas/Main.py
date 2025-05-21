@@ -20,7 +20,7 @@ bibliotecas = pd.read_csv(r"Tp-LaboDD-1\Descargas\TablasOriginales\bibliotecas_p
 establecimientos_ed = pd.read_csv(r"Tp-LaboDD-1\Descargas\TablasOriginales\2025.04.08_padron_oficial_establecimientos_educativos_die.csv", dtype={'id_departamento': str})
 padron = pd.read_csv(r"Tp-LaboDD-1\Descargas\TablasOriginales\padron_poblacion.csv", dtype={'id_departamento': str})
 
-#EE_limpio para poder crear la tabla Departamentos
+#EE_limpio para poder crear la tabla Departamento
 EE_limpio01 = pd.read_csv("EE_limpio_final_usando2daopcion.csv")
 
 
