@@ -126,7 +126,7 @@ padron_final['id_departamento'] = padron_final['id_departamento'].replace({
     '02091': '02113',
     '02098': '02114'
 })
-
+    
 
 # Genera el padron final, lo comento asi no salta error
 
