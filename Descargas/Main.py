@@ -20,6 +20,9 @@ bibliotecas = pd.read_csv(r"Tp-LaboDD-1\Descargas\TablasOriginales\bibliotecas_p
 establecimientos_ed = pd.read_csv(r"Tp-LaboDD-1\Descargas\TablasOriginales\2025.04.08_padron_oficial_establecimientos_educativos_die.csv", dtype={'id_departamento': str})
 padron = pd.read_csv(r"Tp-LaboDD-1\Descargas\TablasOriginales\padron_poblacion.csv", dtype={'id_departamento': str})
 
+#EE_limpio para poder crear la tabla Departamentos
+EE_limpio01 = pd.read_csv("EE_limpio_final_usando2daopcion.csv")
+
 
 # Generamos las tablas del modelo relacional 
 consulta_provincia = """
@@ -30,7 +33,7 @@ provincia = duckdb.query(consulta_provincia).df()
 
 consulta_departamento = """
                         SELECT DISTINCT id_departamento, departamento, SUBSTR(id_departamento, 1, 2) AS id_provincia
-                        FROM establecimientos_ed
+                        FROM EE_limpio01
                     """
 departamento = duckdb.query(consulta_departamento).df()
 
