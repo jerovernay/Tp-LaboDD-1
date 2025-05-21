@@ -38,13 +38,27 @@ departamento = duckdb.query(consulta_departamento).df()
 
 
 
-
+# duck lee las cosas desde aca, hay que tener bien los que usamos
+BP_limpio = pd.read_csv("BP_limpio.csv")
+EE_limpio01 = pd.read_csv("EE_limpio_final_usando2daopcion.csv")
+Provincia = pd.read_csv("Provincia.csv")
+Depto = pd.read_csv("Departamento_corregido.csv")
+Poblacion = pd.read_csv("Padron_limpio_final.csv")
 
 
 
 
 
 """                                 ====== CONSULTAS SQL =====                                          """
+
+# Registramos los nombres para hacer las consultas
+
+duckdb.register("EE", EE_limpio01)
+duckdb.register("Poblacion", Poblacion)
+duckdb.register("Departamento", Depto)
+duckdb.register("Provincia", Provincia)  
+duckdb.register("BP", BP_limpio)
+
 
 
 '=== Consulta 1 ==='
