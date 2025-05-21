@@ -6,9 +6,8 @@ import numpy as np
 from matplotlib.lines import Line2D
 from matplotlib.ticker import ScalarFormatter
 
-EE = pd.read_csv(r"C:\Users\gasto\Downloads\labo\EE_limpio _grafico.csv")
-BP = pd.read_csv(r"C:\Users\gasto\Downloads\labo\BP_limpio_grafico.csv")
-gr = pd.read_csv(r"C:\Users\gasto\Downloads\labo\graf_3.csv")
+EE = pd.read_csv(r"C:\Users\gasto\OneDrive\Documents\tp_labo\EE_limpio_final_usando2daopcion.csv")
+BP = pd.read_csv(r"C:\Users\gasto\OneDrive\Documents\tp_labo\BP_limpio (2).csv")
 
 con = duckdb.connect()
 
@@ -24,6 +23,8 @@ query = """
 
 resultado = con.execute(query).fetchdf()
 resultado.to_csv('graf_3.csv', index=False)
+
+gr = pd.read_csv(r"graf_3.csv")
 
 #ordena por mediana de provincia, de manera descendiente
 provincia_orden = (
@@ -78,6 +79,6 @@ plt.xticks(rotation=45, ha="right", fontsize=14)
 
 #lineas para que se entiende a que provincia pertenece cada boxplot
 for i in range(len(provincia_orden)):
-    plt.axvline(i, color='gray', linewidth=0.3, linestyle='--')
+    plt.axvline(i, color='gray', linewidth=0.6, linestyle='--')
     
 plt.show()
