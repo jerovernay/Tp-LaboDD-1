@@ -44,7 +44,7 @@ EE_aux.rename(columns={"Código de departamento" : "id_departamento"}, inplace =
 EE_aux['Primario'] = np.ceil(EE_aux['Primario'].fillna(0))
 
 
-# #Creamos y redondeamos Jardin, tomando 1 si el EE tiene Jardin maternal o Jardin de infantes, y 0 en su defecto
+#Creamos y redondeamos Jardin, tomando 1 si el EE tiene Jardin maternal o Jardin de infantes, y 0 en su defecto
 EE_aux['Jardin'] = np.ceil(
     EE_aux[['Nivel inicial - Jardín maternal', 'Nivel inicial - Jardín de infantes']]
     .mean(axis=1)
@@ -52,7 +52,7 @@ EE_aux['Jardin'] = np.ceil(
 )
 
 
-# #Creamos y redondeamos Secundario,  tomando 1 si el EE tiene Secundario o Secundario - INET, y 0 en su defecto
+#Creamos y redondeamos Secundario,  tomando 1 si el EE tiene Secundario o Secundario - INET, y 0 en su defecto
 EE_aux['Secun'] = np.ceil(
     EE_aux[['Secundario', 'Secundario - INET']]
     .mean(axis=1)
@@ -252,7 +252,7 @@ departamentos['id_departamento'] = departamentos['id_departamento'].replace({
 departamentos.loc[departamentos['Departamento'] == 'Comuna 15', 'id_departamento'] = departamentos.loc[departamentos['Departamento'] == 'Comuna 15', 'id_departamento'].replace(2105, 2115)
 
 # Convertimos a csv:
-#departamentos.to_csv('Departamento.csv', index=False)
+departamentos.to_csv('Departamento2.csv', index=False)
 
 """ Generamos Provincia """
 
