@@ -29,7 +29,7 @@ EE_aux = EE.loc[:, mascara]
 EE_aux.columns = EE_aux.columns.str.strip()
 
 # Seleccionamos solo las deseadas (dejamos jurisdiccion, porque asi podemos entender bien el codigo,id, area de departamento)
-EE_aux = EE_aux.reset_index()[['Código de departamento','Cueanexo','Departamento', 'Común', 'Nivel inicial - Jardín maternal', 'Nivel inicial - Jardín de infantes', 'Primario', 'Secundario', 'Secundario - INET']]
+EE_aux = EE_aux.reset_index()[['Código de departamento','Cueanexo', 'Común', 'Nivel inicial - Jardín maternal', 'Nivel inicial - Jardín de infantes', 'Primario', 'Secundario', 'Secundario - INET']]
 
 # Limpiamos la antartida
 EE_aux = EE_aux[EE_aux['Código de departamento'] != 94028]
