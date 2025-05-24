@@ -421,7 +421,9 @@ fig.show()
 # figura, ordenados por la mediana de cada provincia."
 
 # %%
-query = """
+# Vamos a utilizar una consulta antes de graficar
+
+Q_grafico = """
     SELECT EE.Departamento, nombre AS provincia, COUNT(EE.Departamento) AS cantidad 
     FROM EE JOIN  Departamento ON EE."id_departamento" = Departamento."id_departamento"
     JOIN Provincia ON Departamento."id_provincia" = Provincia."id"
@@ -429,13 +431,11 @@ query = """
     ORDER BY cantidad DESC
 """
 
-resultado = duckdb.query(query).df()
-
-gr = pd.read_csv(r"Graficos\graf_3.csv") 
+grafico = duckdb.query(Q_grafico).df()
 
 # #ordena por mediana de provincia, de manera descendiente
 provincia_orden = (
-    gr.groupby("provincia")["cantidad"]
+    grafico.groupby("provincia")["cantidad"]
     .median()
     .sort_values(ascending=False)
     .index
@@ -446,7 +446,7 @@ plt.figure(figsize=(16,10))
 
 # --- Boxplot ---
 boxplot = sns.boxplot(
-    data=gr,
+    data=grafico,
     x="provincia",
     y="cantidad",
     order=provincia_orden,
@@ -458,7 +458,7 @@ boxplot = sns.boxplot(
 
 # # --- Stripplot ---
 sns.stripplot(
-    data=gr,
+    data=grafico,
     x="provincia",
     y="cantidad",
     order=provincia_orden,    # Agrupar por provincia
