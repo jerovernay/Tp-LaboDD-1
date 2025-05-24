@@ -1,13 +1,17 @@
 """ Metricas del Analisis de Calidad de Datos para el GQM """
 
-
 import duckdb
 import pandas as pd
+import os
 
+# Antes de continuar les pedimos que eb la siguiente linea completen con el path donde se encuentre guardada la carpeta Tp-LaboDD-1
+# para poder correr el codigo sin problemas.
+os.chdir(r"C:\Users\Dell\Escritorio")       
 
 #Leemos los Csv's originales
-bibliotecas = pd.read_csv("aca ponemos el oficial que usemos para BP")
-establecimientos_ed = pd.read_csv("aca ponemos el oficial que usemos para EE", sep=';')
+bibliotecas = pd.read_csv(r"Tp-LaboDD-1\Descargas\TablasOriginales\bibliotecas_populares.csv")
+establecimientos_ed = pd.read_csv(r"Tp-LaboDD-1\Descargas\TablasOriginales\2025.04.08_padron_oficial_establecimientos_educativos_die.csv")
+
 
 # Conectamos a Duckdb y registramos 
 con = duckdb.connect()
