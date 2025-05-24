@@ -3,7 +3,11 @@ import duckdb
 import numpy as np
 import os
 
-os.chdir(r"C:\Users\Dell\Escritorio")       # Por favor completar con el path donde se encuentre la carpeta Tp-LaboDD-1
+# En este archivo vamos a tomar las tablas originales y modificarlas para construir los archivos que definan las relaciones del modelo realcional.
+
+# Antes de continuar les pedimos que eb la siguiente linea completen con el path donde se encuentre guardada la carpeta Tp-LaboDD-1
+# para poder correr el codigo sin problemas.
+os.chdir(r"C:\Users\Dell\Escritorio")       
 
 # Leemos los archivos originales:
 EE = pd.read_csv(r"Tp-LaboDD-1\Descargas\TablasOriginales\EE(2da_opcion).csv", sep=';')               # Usamos una version reducida en formato csv ya que el excel original 
@@ -28,23 +32,24 @@ EE_aux = EE.loc[:, mascara]
 # Limpiamos espacios en los nombres de columnas
 EE_aux.columns = EE_aux.columns.str.strip()
 
+
 # Seleccionamos solo las deseadas (dejamos jurisdiccion, porque asi podemos entender bien el codigo,id, area de departamento)
 EE_aux = EE_aux.reset_index()[['Código de departamento','Cueanexo', 'Común', 'Nivel inicial - Jardín maternal', 'Nivel inicial - Jardín de infantes', 'Primario', 'Secundario', 'Secundario - INET']]
+
 
 # Limpiamos la antartida
 EE_aux = EE_aux[EE_aux['Código de departamento'] != 94028]
 
-#Renombre de la columna "Código de departamento" a "id_departamento"
+
+# Renombre de la columna "Código de departamento" a "id_departamento"
 EE_aux.rename(columns={"Código de departamento" : "id_departamento"}, inplace = True)
 
 
-# -----------------------------------------------------------
-
-#Rellenamos todos los NaN de la columna "Primario" con 0
+# Rellenamos todos los NaN de la columna "Primario" con 0
 EE_aux['Primario'] = np.ceil(EE_aux['Primario'].fillna(0))
-
-
-#Creamos y redondeamos Jardin, tomando 1 si el EE tiene Jardin maternal o Jardin de infantes, y 0 en su defecto
+ 
+ 
+# Creamos y redondeamos Jardin, tomando 1 si el EE tiene Jardin maternal o Jardin de infantes, y 0 en su defecto
 EE_aux['Jardin'] = np.ceil(
     EE_aux[['Nivel inicial - Jardín maternal', 'Nivel inicial - Jardín de infantes']]
     .mean(axis=1)
@@ -52,14 +57,14 @@ EE_aux['Jardin'] = np.ceil(
 )
 
 
-#Creamos y redondeamos Secundario,  tomando 1 si el EE tiene Secundario o Secundario - INET, y 0 en su defecto
+# Creamos y redondeamos Secundario,  tomando 1 si el EE tiene Secundario o Secundario - INET, y 0 en su defecto
 EE_aux['Secun'] = np.ceil(
     EE_aux[['Secundario', 'Secundario - INET']]
     .mean(axis=1)
     .fillna(0)
 )
 
-# # Eliminamos columnas originales y renombramos "Secun"
+# Eliminamos columnas originales y renombramos "Secun"
 columnas_a_eliminar = [
     'Nivel inicial - Jardín maternal',
     'Nivel inicial - Jardín de infantes',
@@ -72,7 +77,7 @@ EE_nuevo = EE_nuevo.rename(columns={'Secun': 'Secundario'})
 
 # Convertimos a csv:
 #EE_nuevo.to_csv('EE_limpio.csv', index=False)
-
+#------------------------------------------------------------
 
 """ Limpiamos Padron en base al original """
 
@@ -151,9 +156,6 @@ Padron['id_departamento'] = Padron['id_departamento'].replace({
     2105: 2115
 })
 
-
-# -------------------------------------------------------
-
 #Definimos la lista única de id_departamentos
 deptos = list(Padron['id_departamento'].unique())
 
@@ -201,7 +203,7 @@ df_final.reset_index(drop=True, inplace=True)
 
 # Convertimos a csv: 
 #df_final.to_csv('Padron_limpio.csv', index=False) 
-
+#------------------------------------------------------------
 
 
 """ Limpiamos BP en base al original """
@@ -219,6 +221,7 @@ bibliotecas['id_departamento'] = bibliotecas['id_departamento'].replace({
 
 # Convertimos a csv:
 #bibliotecas.to_csv("BP_limpio.csv", index = False)
+#------------------------------------------------------------
 
 """ Generamos Departamento """
 
@@ -253,6 +256,7 @@ departamentos.loc[departamentos['Departamento'] == 'Comuna 15', 'id_departamento
 
 # Convertimos a csv:
 departamentos.to_csv('Departamento2.csv', index=False)
+#------------------------------------------------------------
 
 """ Generamos Provincia """
 

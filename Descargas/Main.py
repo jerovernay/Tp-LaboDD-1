@@ -6,15 +6,19 @@
 # ---
 
 # %% [markdown]
-# Nota: Los archivos originales fueron modificados para facilitar la lectura de los mismos. Aquí se encuentran
-#     en formato csv, y con pequeños cambios como nombres de columnas que no afectan a la información 
-#     concreta de los archivos originales.
+# # Contenidos:
+
+# %% [markdown]
+# En este archivo se encuentran los códigos correspondientes a las consultas SQL solicitadas en el enunciado. Por otro lado, se encuentran los códigos que gue generan las imágenes pertenecientes a la sección de visualización y análisis de datos. Los archivos utilizados en esta sección corresponden a las relaciones del modelo realacional y fueron previamente modificados. El código utilizado para generar estos archivos se encientra en el archivo "Limpieza_de_archivos".
+
+# %% [markdown]
+# Nota: Este archivo fue originalmente creado en Jupyter Notebook por lo que recomendamos leerlo en este mismo formato.
 
 # %% [markdown]
 # ---
 
 # %% [markdown]
-# # Leemos los archivos originales:
+# # Leemos los archivos del Modelo relacional:
 
 # %%
 import duckdb
@@ -37,9 +41,10 @@ Poblacion = pd.read_csv("TablasModelo\\Padron_limpio.csv")
 # %% [markdown]
 # # Consultas SQL en base al modelo relacional:
 
-# %%
-# Registramos los nombres para hacer las consultas
+# %% [markdown]
+# Primero registramos los nombres para hacer las consultas:
 
+# %%
 duckdb.register("EE", EE)
 duckdb.register("Poblacion", Poblacion)
 duckdb.register("Departamento", Departamento)
@@ -310,6 +315,9 @@ plt.show()
 # (identificándolos por colores). Se pueden basar en la primera consulta SQL
 # para realizar este gráfico."
 
+# %% [markdown]
+# Nota: En el caso de este gráfico tenemos más de una versión para mostrar ya que tienen distintos enfoques. Primero veremos un heatmap en el cuál la intuición visual ayuda a distinguir las propociones pero no es tan claro en cuanto a las cantidades reales de alumnos por EE. En la segunda versión veremos un gráfico de barras con los valores reales.
+
 # %%
 consulta_1 = pd.read_csv("ConsultasSQL\\Consulta_1.csv")                                            # Leemos el archivo consulta_1
 consulta_1.columns = consulta_1.columns.str.strip().str.lower()
@@ -351,7 +359,7 @@ sns.heatmap(
     cbar_kws={"label": "Alumnos por EE"},
     annot=False
 )
-plt.title(f"{provincia} - Alumnos por EE según nivel educativo")
+plt.title(f"{provincia} - Alumnos por EE según nivel educativo")                                    # Agregamos el titulo 
 plt.xlabel("Nivel educativo")
 plt.ylabel("Departamento")
 plt.tight_layout()
@@ -363,68 +371,45 @@ plt.show()
 # %%
 import plotly.graph_objects as go
 
-consulta_1["chicos_por_jardin"] = consulta_1["poblacion_jardin"] / consulta_1["jardines"]       # Realizamos los calculos
+provincia = "Tucumán"                                               # Si cambiamos este nombre podemos ver el grafico de cualquier provincia
+
+
+consulta_1["chicos_por_jardin"] = consulta_1["poblacion_jardin"] / consulta_1["jardines"]       # Calculamos los valores correspondientes
 consulta_1["chicos_por_primaria"] = consulta_1["poblacion_primaria"] / consulta_1["primarias"]
 consulta_1["chicos_por_secundaria"] = consulta_1["poblacion_secundaria"] / consulta_1["secundarios"]
 
-provincias = consulta_1["provincia"].unique()                               # Listamos las 24 provincias
 
-colores = {
-    "Jardín": "#E69F00",                                                # Colores para los niveles educativos
+filtro = consulta_1[consulta_1["provincia"] == provincia]           # Filtramos los de la determinada provincia
+departamentos = filtro["departamento"]
+
+colores = {                                                         # Elejimos los colores para nuestro grafico
+    "Jardín": "#E69F00",    
     "Primaria": "#56B4E9",
     "Secundaria": "#009E73"
 }
 
-fig = go.Figure()                                                           # Creamos una figura con slider
+fig = go.Figure()                                                   # Creamos el grafico con las divisiones por nivel educativo
 
-for i, prov in enumerate(provincias):
-    subdf = consulta_1[consulta_1["provincia"] == prov]
-    departamentos = subdf["departamento"]
+for nivel, columna in zip(["Jardín", "Primaria", "Secundaria"],
+                          ["chicos_por_jardin", "chicos_por_primaria", "chicos_por_secundaria"]):
+    fig.add_trace(go.Bar(
+        x=departamentos,
+        y=filtro[columna],
+        name=nivel,
+        marker_color=colores[nivel],
+        offsetgroup=nivel,
+        legendgroup=nivel
+    ))
 
-                                                                            # Agregar una barra para cada nivel
-    for nivel, columna in zip(["Jardín", "Primaria", "Secundaria"],
-                              ["chicos_por_jardin", "chicos_por_primaria", "chicos_por_secundaria"]):
-        fig.add_trace(go.Bar(
-            x=departamentos,
-            y=subdf[columna],
-            name=nivel,
-            marker_color=colores[nivel],
-            visible=(i == 0),  
-            offsetgroup=nivel,
-            legendgroup=nivel,
-            xaxis="x",
-            yaxis="y"
-        ))
-
-steps = []                                                                  # Creamos los pasos del slider
-for i, prov in enumerate(provincias):
-    visibles = [False] * (len(provincias) * 3)
-    for j in range(3):                                                      # Cada provincia tiene 3 trazas
-        visibles[i * 3 + j] = True
-    step = dict(
-        method="update",
-        args=[{"visible": visibles},
-              {"title": f"Provincia: {prov}"}],
-        label=prov
-    )
-    steps.append(step)
-
-sliders = [dict(
-    active=0,
-    currentvalue={"prefix": "Provincia: "},
-    pad={"t": 50},
-    steps=steps
-)]
-fig.update_layout(                                                          # Ponemos los nombres a -90 para que se lean sobre todo en la provincia
-    sliders=sliders,                                                        # de Buenos Aires
-    barmode='group',
-    title="Cantidad de chicos por EE (Establecimientos Educativos)",
+fig.update_layout(                                                  # Ajustamos el formato, sobre todo porque la provincia de Buenos Aires tiene
+    title=f"Cantidad de chicos por EE en {provincia}",              # 135 partidos
     xaxis_title="Departamento",
     yaxis_title="Chicos por EE",
     xaxis_tickangle=-90,
-    height=600
+    barmode='group',
+    height=600,
+    width=2200 if provincia == "Buenos Aires" else 1000
 )
-
 fig.show()
 
 # %% [markdown]
@@ -447,8 +432,6 @@ query = """
 resultado = duckdb.query(query).df()
 
 gr = pd.read_csv(r"Graficos\graf_3.csv") 
-
-
 
 # #ordena por mediana de provincia, de manera descendiente
 provincia_orden = (
@@ -515,6 +498,11 @@ plt.show()
 # "Relación entre la cantidad de BP cada mil habitantes y de EE cada mil
 # habitantes por departamento."
 
+# %% [markdown]
+# Nota:   En el caso de este gráfico también tenemos más de una versión para mostrar ya que nuevamente cada uno tiene un distinto enfoque. En la primer   figura tenemos un histograma donde veremos según la provincia, cómo la cantidad de EE cada mil habitantes va de menor a mayor y además tenemos una      regresión lineal para ver la tendencia de la cantidad de BPs cada mil habitantes. 
+# En el segundo caso tenemos por provincia, un scatter plot clásico donde el eje X representa la cantidad de BPs mientras que el eje Y representa la cantidad de EEs. También cuenta con regresión lineal para anlizar la tendencia.
+# El último gráfico muestra en escala logaritmica los 528 departamentos/partidos/comunas juntos donde se ve mucho más clara la relación entre ambos parámetros.
+
 # %%
 from sklearn.linear_model import LinearRegression
 
@@ -558,98 +546,57 @@ plt.show()
 # # Otras versiones con diferentes enfoques:
 
 # %%
-import plotly.express as px
+provincia = "Buenos Aires"                                                      # Nuevamente cambiando el nombre de la provincia podemos ver su 
+                                                                                # respectivo grafico
 
-consulta_3["bp_por_mil"] = consulta_3["cantidad_bp"] / consulta_3["poblacion_total"] * 1000         # Calculamos los valores
+consulta_3["bp_por_mil"] = consulta_3["cantidad_bp"] / consulta_3["poblacion_total"] * 1000     # Calculamos los valores para la provincia
 consulta_3["ee_por_mil"] = consulta_3["cantidad_ee"] / consulta_3["poblacion_total"] * 1000
-
 consulta_3.columns = [col.strip().lower() for col in consulta_3.columns]
 
-provincias = consulta_3["provincia"].unique()                                                       # Tomamos provincias únicas
+datos = consulta_3[consulta_3["provincia"] == provincia].copy()
 
-color_palette = px.colors.qualitative.Safe                                                          # Paleta colorblind friendly
+# Colores únicos por departamento (colorblind-friendly)
+departamentos = datos["departamento"].astype("category")                                        # Agregamos colores únicos por departamento 
+datos["color_code"] = departamentos.cat.codes                                                   # con una paleta colorblind-friendly
+palette = sns.color_palette("colorblind", len(departamentos.cat.categories))
+colors = [palette[i] for i in datos["color_code"]]
 
-fig = go.Figure()                                                                                   # Creamos figura
-                                          
-for i, prov in enumerate(provincias):                                                               # Agregamos trazas y regresiones por provincia
-    datos = consulta_3[consulta_3["provincia"] == prov].copy()
+if provincia == "Buenos Aires":                                                 # Ajustamos medidas sobre todo para el caso de la provincia de Buenos Aires
+    plt.figure(figsize=(30, 30))
+else:
+    plt.figure(figsize=(10, 7))
+plt.scatter(datos["bp_por_mil"], datos["ee_por_mil"], c=colors, s=60, edgecolors='k', alpha=0.85)
 
-    depto_codes = datos["departamento"].astype('category').cat.codes     # Asignamos color único por departamento (repitiendo la paleta si hace falta)
-    colors = [color_palette[c % len(color_palette)] for c in depto_codes]
+plt.xlabel("BP cada 1000 habitantes", fontsize=12)                              # Nombramos los ejes XY de nuestro grafico
+plt.ylabel("EE cada 1000 habitantes", fontsize=12)
+plt.title(f"Relación BP vs EE por mil habitantes - {provincia}", fontsize=14)
 
-    fig.add_trace(go.Scatter(                                                                       # Scatter plot por provincia
-        x=datos["bp_por_mil"],
-        y=datos["ee_por_mil"],
-        mode='markers',
-        marker=dict(
-            size=10,
-            opacity=0.9,
-            color=colors,
-            line=dict(width=0.5, color='DarkSlateGrey')
-        ),
-        text=datos["departamento"],
-        hovertemplate="<b>%{text}</b><br>BP/1000 hab: %{x:.2f}<br>EE/1000 hab: %{y:.2f}<extra></extra>",
-        name=prov,
-        visible=(i == 0),
-        showlegend=False
-    ))
 
-    x = datos["bp_por_mil"]                                                                         # Agregamos regresión si es posible
-    y = datos["ee_por_mil"]                                                                         # para facilitar la lectura del grafico
-    if len(x.dropna()) > 1 and x.nunique() > 1 and y.nunique() > 1:
-        try:
-            coef = np.polyfit(x, y, 1)
-            poly1d_fn = np.poly1d(coef)
-            x_sorted = np.linspace(x.min(), x.max(), 100)
-            y_fit = poly1d_fn(x_sorted)
+x = datos["bp_por_mil"]                                                         # Utilizamos regresion lineal para facilitar el analisis de la tendencia
+y = datos["ee_por_mil"]
+if x.nunique() > 1 and y.nunique() > 1:
+    coef = np.polyfit(x, y, 1)
+    poly = np.poly1d(coef)
+    x_line = np.linspace(x.min(), x.max(), 100)
+    y_line = poly(x_line)
+    plt.plot(x_line, y_line, color="red", linestyle="--", label="Regresión lineal")
 
-            fig.add_trace(go.Scatter(
-                x=x_sorted,
-                y=y_fit,
-                mode="lines",
-                line=dict(color="red", dash="dot"),
-                name=f"Regresión - {prov}",
-                visible=(i == 0),
-                showlegend=False
-            ))
-        except np.linalg.LinAlgError:
-            continue
 
-steps = []
-for i, prov in enumerate(provincias):                                                               # Creamos el slider
-    vis = [False] * (2 * len(provincias))
-    vis[i * 2] = True
-    if i * 2 + 1 < len(vis):
-        vis[i * 2 + 1] = True
-    steps.append(dict(
-        method="update",
-        args=[{"visible": vis},
-              {"title": f"Provincia: {prov}"}],
-        label=prov
-    ))
+nombres_deptos = [Line2D([0], [0], marker='o', color='w', label=depto,           # Creamos las etiquetas para los nombres de los departamentos
+                  markerfacecolor=palette[i], markersize=8)
+           for i, depto in enumerate(departamentos.cat.categories)]
+plt.legend(handles=nombres_deptos, bbox_to_anchor=(1.05, 1), loc='upper left', title="Departamento")
 
-sliders = [dict(
-    active=0,
-    currentvalue={"prefix": "Provincia: "},
-    pad={"t": 50},
-    steps=steps
-)]
-
-fig.update_layout(                                              
-    sliders=sliders,
-    xaxis_title="BP cada 1000 habitantes",
-    yaxis_title="EE cada 1000 habitantes",
-    title="Relación entre BP y EE por mil habitantes con regresión",
-    height=650
-)
-fig.show()                                                   
+plt.tight_layout()
+plt.grid(True)
+plt.show()
 
 # %%
 consulta_3_log = consulta_3[(consulta_3['bp_por_mil'] > 0) & (consulta_3['ee_por_mil'] > 0)].copy()     # La mayoria de los datos los teniamos de antes
 
 
-plt.figure(figsize=(8, 6))                                                                              # Graficamos
-plt.scatter(consulta_3_log['bp_por_mil'], consulta_3_log['ee_por_mil'], alpha=0.6, s=20)
+plt.figure(figsize=(8, 6))                                                                              # Graficamos la cantidad de BPs y EEs cada 
+plt.scatter(consulta_3_log['bp_por_mil'], consulta_3_log['ee_por_mil'], alpha=0.6, s=20)                # 1000 habitantes
 plt.xscale('log')
 plt.yscale('log')
 plt.xlabel('BP por mil habitantes')
