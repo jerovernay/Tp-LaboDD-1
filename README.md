@@ -1,8 +1,3 @@
-<p align="center">
-  <img src="https://via.placeholder.com/1200x600/F2F2F2/F2F2F2" />
-</p>
-
-
 # Tp-LaboDD-1
 
 Aca dejo el link al pdf ("Documentos de Google") que vamos a usar en principio para hacer la entrega general. Lo dejo online, porque me parece que puede ayudar a que no se nos haga quilombo en ese sentido.
