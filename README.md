@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://via.placeholder.com/800x400/eeeeee/666666?" />
+  <img src="https://via.placeholder.com/1200x600/F2F2F2/F2F2F2" />
 </p>
 
 
